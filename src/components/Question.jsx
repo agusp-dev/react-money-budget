@@ -1,23 +1,32 @@
 import React, { Fragment, useState } from 'react'
 import { Error } from '../components'
+import PropTypes from 'prop-types'
 
-const Question = () => {
+const Question = ({ 
+	saveTotalBudget, 
+	saveRemainingBudget,
+	updateMoneyBudgetQuestion
+}) => {
 
-	const [count, saveCount] = useState(0)
+	const [amount, saveAmount] = useState(0)
 	const [error, saveError] = useState(false)
 
 	const setMoneyBudget = e => {
-		saveCount( parseInt( e.target.value ) )
+		saveAmount( parseInt( e.target.value ) )
 	}
 
 	const handleSubmit = e => {
 		e.preventDefault()
-		if (count < 1 || isNaN( count )) {
-			saveError(true)
-		} else {
-			saveError(false)
-		}
+		const isError = checkAmount()
+		if (isError) return saveError(true)
+		//amount ok
+		saveError(false)
+		saveTotalBudget(amount)
+		saveRemainingBudget(amount)
+		updateMoneyBudgetQuestion(false)
 	}
+
+	const checkAmount = () => (amount < 1 || isNaN( amount ))
 
 	return (
 		<Fragment>
@@ -37,6 +46,12 @@ const Question = () => {
 			</form>
 		</Fragment>
 	)
+}
+
+Question.propTypes = {
+	saveTotalBudget: PropTypes.func.isRequired,
+	saveRemainingBudget: PropTypes.func.isRequired,
+	updateMoneyBudgetQuestion: PropTypes.func.isRequired
 }
 
 export { Question }
