@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Question, Expenses } from './components'
+import React, { useState, useEffect } from 'react'
+import { Question, ExpensesList, NewExpense, MoneyControl } from './components'
 
 function App() {
 
@@ -7,13 +7,18 @@ function App() {
 	const [remainingBudget, saveRemainingBudget] = useState(0)
 	const [showMoneyBudgetQuestion, updateMoneyBudgetQuestion] = useState(true)
 	const [expenses, saveExpenses] = useState([])
+	const [newExpense, saveNewExpense] = useState({})
+	const [createNewExpense, updateCreateNewExpense] = useState(false)
 
-	const saveNewExpense = expense => {
-		saveExpenses([
-			...expenses,
-			expense
-		])
-	}
+	useEffect(() => {
+		if ( createNewExpense ) {
+			saveExpenses([
+				...expenses,
+				newExpense
+			])
+			saveRemainingBudget( remainingBudget - newExpense.amount )
+		}
+	}, [newExpense, createNewExpense])
 
   return (
     <div className="App">
@@ -29,11 +34,16 @@ function App() {
 						) : (
 							<div className='row'>
 								<div className='one-half column'>
-									<Expenses
-										saveNewExpense={ saveNewExpense } />
+									<NewExpense
+										saveNewExpense={ saveNewExpense }
+										updateCreateNewExpense={ updateCreateNewExpense } />
 								</div>
 								<div className='one-half column'>
-									2
+									<ExpensesList 
+										expenses={ expenses }/>
+									<MoneyControl
+										totalBudget={ totalBudget }
+										remainingBudget={ remainingBudget } />
 								</div>
 							</div>
 						)}

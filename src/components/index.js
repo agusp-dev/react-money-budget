@@ -1,3 +1,6 @@
 export * from './Question'
 export * from './Error'
-export * from './Expenses'
+export * from './ExpensesList'
+export * from './NewExpense'
+export * from './ExpenseDetail'
+export * from './MoneyControl'

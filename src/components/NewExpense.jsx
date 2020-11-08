@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from 'react'
-import { Error } from './'
+import { Error } from '.'
 import { nanoid } from 'nanoid'
 import PropTypes from 'prop-types'
 
-const Expenses = ({ saveNewExpense }) => {
+const NewExpense = ({ saveNewExpense, updateCreateNewExpense }) => {
 
 	const [expenseName, saveExpenseName] = useState('')
 	const [expenseAmount, saveExpenseAmount] = useState(0)
@@ -17,6 +17,7 @@ const Expenses = ({ saveNewExpense }) => {
 		saveError(false)
 		const expense = getExpense()
 		saveNewExpense(expense)
+		updateCreateNewExpense(true)
 		resetExpenseFields()
 	}
 
@@ -34,7 +35,7 @@ const Expenses = ({ saveNewExpense }) => {
 
 	return (
 		<Fragment>
-			<h2>Your Expenses</h2>
+			<h2>New Expense</h2>
 			{error && (
 				<Error message='Please, put a valid amount!' />
 			)}
@@ -66,8 +67,9 @@ const Expenses = ({ saveNewExpense }) => {
 	)
 }
 
-Expenses.propTypes = {
-	saveNewExpense: PropTypes.func.isRequired
+NewExpense.propTypes = {
+	saveNewExpense: PropTypes.func.isRequired,
+	updateCreateNewExpense: PropTypes.func.isRequired
 }
 
-export { Expenses }
+export { NewExpense }
